@@ -6,7 +6,7 @@ SELECT ROUND(AVG((TO_DAYS(NOW()) - TO_DAYS(`birthday`)) DIV 365.25), 2) AS `aver
 # Подсчитайте количество дней рождения, которые приходятся на каждый из дней недели. Следует учесть, что необходимы дни недели текущего года, а не года рождения.
     # (по желанию) Подсчитайте произведение чисел в столбце таблицы.
 
-SELECT DAYNAME(`birthday`) AS `bd_weekday`, COUNT(*) as `count` FROM `users` GROUP BY DAYNAME(`birthday`) WITH ROLLUP;
+SELECT DAYNAME(`birthday`) AS `bd_weekday`, COUNT(*) as `count` FROM `users` GROUP BY DAYNAME(`birthday`) ;
 +------------+-------+
 | bd_weekday | count |
 +------------+-------+
@@ -17,7 +17,6 @@ SELECT DAYNAME(`birthday`) AS `bd_weekday`, COUNT(*) as `count` FROM `users` GRO
 | Thursday   |     8 |
 | Tuesday    |     8 |
 | Wednesday  |    11 |
-|            |    64 |
 +------------+-------+
 8 rows in set (0.00 sec)
 
