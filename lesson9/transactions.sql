@@ -37,3 +37,30 @@ SELECT * FROM `shop`.`users`;
 |  4 | Алина      | 2000-08-25  | 2020-12-28 17:45:15 | 2020-12-28 17:45:15 |
 +----+------------+-------------+---------------------+---------------------+
 3 rows in set (0.00 sec)
+
+
+"""
+2. Создайте представление, которое выводит название name товарной позиции из таблицы products
+и соответствующее название каталога name из таблицы catalogs.
+"""
+
+CREATE OR REPLACE VIEW `prod_cat`(`product_id`, `product_name`, `catalog_name`) AS 
+  SELECT `p`.`id` AS `product_id`, `p`.`name`, `c`.`name` 
+  FROM `products` AS `p` 
+LEFT JOIN
+  `catalogs` AS `c`
+   ON `p`.`catalog_id` = `c`.`id`;
+
+SELECT * FROM prod_cat;
++------------+-------------------------+-----------------------------------+
+| product_id | product_name            | catalog_name                      |
++------------+-------------------------+-----------------------------------+
+|          1 | Intel Core i3-8100      | Процессоры                        |
+|          2 | Intel Core i5-7400      | Процессоры                        |
+|          3 | AMD FX-8320E            | Процессоры                        |
+|          4 | AMD FX-8320             | Процессоры                        |
+|          5 | ASUS ROG MAXIMUS X HERO | Материнские платы                 |
+|          6 | Gigabyte H310M S2H      | Материнские платы                 |
+|          7 | MSI B250M GAMING PRO    | Материнские платы                 |
++------------+-------------------------+-----------------------------------+
+7 rows in set (0.01 sec)
