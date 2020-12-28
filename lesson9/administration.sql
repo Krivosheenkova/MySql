@@ -34,3 +34,22 @@ SHOW GRANTS FOR `shop_read`;
 который бы не имел доступа к таблице accounts, однако, мог бы извлекать 
 записи из представления username.
 """
+CREATE TABLE `accounts` (`id` INT PRIMARY KEY AUTO_INCREMENT, 
+                       `name` VARCHAR(256), 
+                       `password_hash` CHAR(65));
+INSERT INTO `accounts` VALUES  (1, 'Pek', sha1('pekpek'),
+                             (2, 'Mysh', sha1('myshmysh'),
+                             (3, 'Brad', sha1('bradbrad');
+
+CREATE OR REPLACE VIEW `username` AS SELECT `id`, `name` FROM `accounts`;
+
+GRANT SELECT ON `shop`.`username` TO `user_read`;
+SHOW GRANTS FOR `user_read`;
++------------------------------------------------------+
+| Grants for user_read@%                               |
++------------------------------------------------------+
+| GRANT USAGE ON *.* TO `user_read`@`%`                |
+| GRANT SELECT ON `shop`.`username` TO `user_read`@`%` |
++------------------------------------------------------+
+
+                              
