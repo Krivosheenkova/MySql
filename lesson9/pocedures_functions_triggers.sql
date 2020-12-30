@@ -4,22 +4,19 @@
 с 18:00 до 00:00 — "Добрый вечер", с 00:00 до 6:00 — "Доброй ночи".
 """
 DELIMITER !
-
-DROP FUNCTION IF EXISTS `hello`!
-
+DROP FUNCTION IF EXISTS hello!
 CREATE FUNCTION hello ()
 RETURNS TEXT DETERMINISTIC
 BEGIN
-DECLARE `hour` INT;
-SET `hour` = HOUR(NOW());
+SET @h := HOUR(NOW());
 	CASE
-		WHEN `hour` BETWEEN 0 AND 5 THEN
+		WHEN @h BETWEEN 0 AND 5 THEN
 			RETURN "Доброй ночи";
-		WHEN `hour` BETWEEN 6 AND 11 THEN
+		WHEN @h BETWEEN 6 AND 11 THEN
 			RETURN "Доброе утро";
-		WHEN `hour` BETWEEN 12 AND 17 THEN
+		WHEN @h BETWEEN 12 AND 17 THEN
 			RETURN "Добрый день";
-		WHEN `hour` BETWEEN 18 AND 23 THEN
+		WHEN @h BETWEEN 18 AND 23 THEN
 			RETURN "Добрый вечер";
 	END CASE;
 END!
@@ -32,3 +29,23 @@ SELECT NOW(), hello()!
 Используя триггеры, добейтесь того, чтобы одно из этих полей или оба поля были заполнены.
 При попытке присвоить полям NULL-значение необходимо отменить операцию.
 """
+DELIMITER !
+DROP TRIGGER IF EXISTS `both_isnull`!
+CREATE TRIGGER `both_isnull` 
+	BEFORE INSERT ON `products`
+FOR EACH ROW
+BEGIN
+	IF(ISNULL(NEW.`name`) AND ISNULL(NEW.`desc`)) THEN
+		SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'It is unacceptable for both fields to be nullable.';
+	END IF;
+END !
+
+DELIMITER ;
+INSERT INTO `products` (`name`, `desc`, `price`, `catalog_id`)
+	VALUES (NULL, NULL, 42324, 1); -- Error Code: 1644. Trigger Warning! NULL in both fields!
+
+INSERT INTO `products` (`name`, `desc`, `price`, `catalog_id`)
+	VALUES (NULL, 'The Core i3 ranging from 1.30 GHz up to 3.50 GHz, and features either 4 MB of cache.', 7594, 1); -- 1 row(s) affected
+
+SELECT * FROM `products`;
