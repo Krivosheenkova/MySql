@@ -24,7 +24,7 @@ END!
 SELECT NOW(), hello()!
 
 """
-В таблице products есть два текстовых поля: name с названием товара и description с его описанием.
+2. В таблице products есть два текстовых поля: name с названием товара и description с его описанием.
 Допустимо присутствие обоих полей или одно из них. Ситуация, когда оба поля принимают неопределенное значение NULL неприемлема.
 Используя триггеры, добейтесь того, чтобы одно из этих полей или оба поля были заполнены.
 При попытке присвоить полям NULL-значение необходимо отменить операцию.
@@ -49,3 +49,43 @@ INSERT INTO `products` (`name`, `desc`, `price`, `catalog_id`)
 	VALUES (NULL, 'The Core i3 ranging from 1.30 GHz up to 3.50 GHz, and features either 4 MB of cache.', 7594, 1); -- 1 row(s) affected
 
 SELECT * FROM `products`;
+
+"""
+3. (по желанию) Напишите хранимую функцию для вычисления произвольного числа Фибоначчи. 
+Числами Фибоначчи называется последовательность в которой число равно сумме двух предыдущих чисел.
+Вызов функции FIBONACCI(10) должен возвращать число 55.	 
+"""
+DELIMITER !
+DROP FUNCTION IF EXISTS FIBONACCI!
+					 
+CREATE FUNCTION FIBONACCI (D INTEGER)
+	RETURNS INTEGER DETERMINISTIC
+BEGIN
+	SET @NXT = 1;
+	
+	IF D > 2 THEN
+		BEGIN
+			SET @COUNTER = 3;
+			SET @FST = 1;
+			
+			WHILE D >= @COUNTER DO
+				BEGIN
+					SET @NXT = @FST + @NXT;
+					SET @FST = @NXT - @FST;
+					SET @COUNTER = @COUNTER + 1;
+				END;
+			END WHILE;
+		END;
+	END IF;
+	RETURN @NXT;
+END!
+					 
+DELIMITER ;
+SELECT FIBONACCI(1), FIBONACCI(3), FIBONACCI(10), FIBONACCI(15), FIBONACCI(20);
++--------------+--------------+---------------+---------------+---------------+
+| FIBONACCI(1) | FIBONACCI(3) | FIBONACCI(10) | FIBONACCI(15) | FIBONACCI(20) |
++--------------+--------------+---------------+---------------+---------------+
+|            1 |            2 |            55 |           610 |          6765 |
++--------------+--------------+---------------+---------------+---------------+
+		 
+					 
