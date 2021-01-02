@@ -11,7 +11,6 @@ CREATE TABLE logs (
                    `insert_name` VARCHAR(45) NOT NULL
 				  ) ENGINE=ARCHIVE;
 
-
 DROP TRIGGER IF EXISTS `users_log_trigger`;
 DELIMITER !
 CREATE TRIGGER `users_log_trigger` 
@@ -36,6 +35,7 @@ FOR EACH ROW
 	END!
 
 INSERT INTO `catalogs` SET `name` = 'Power'!
+
 
 DROP TRIGGER IF EXISTS `products_log_trigger`;
 CREATE TRIGGER `products_log_trigger`
