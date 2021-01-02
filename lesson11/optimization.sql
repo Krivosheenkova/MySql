@@ -5,8 +5,8 @@ catalogs и products в таблицу logs помещается время и �
 """
 DROP TABLE IF EXISTS logs;
 CREATE TABLE logs (
-				   `insert_created_at` DATETIME DEFAULT NOW(),
-				   `table_name` VARCHAR(45) NOT NULL,
+		   `insert_created_at` DATETIME DEFAULT NOW(),
+		   `table_name` VARCHAR(45) NOT NULL,
                    `pk_id` INT NOT NULL,
                    `insert_name` VARCHAR(45) NOT NULL
 				  ) ENGINE=ARCHIVE;
@@ -19,7 +19,7 @@ AFTER INSERT ON `users`
 FOR EACH ROW
 	BEGIN
 		 INSERT INTO `logs` (`table_name`, `pk_id`, `insert_name`)
-				     VALUES ('users', NEW.`id`, NEW.`name`);
+			     VALUES ('users', NEW.`id`, NEW.`name`);
 	END!
     
 INSERT INTO `users` SET `name` = 'Alyosha', 
@@ -32,7 +32,7 @@ AFTER INSERT ON `catalogs`
 FOR EACH ROW
 	BEGIN
 		 INSERT INTO `logs` (`table_name`, `pk_id`, `insert_name`)
-				     VALUES ('catalogs', NEW.`id`, NEW.`name`);
+			     VALUES ('catalogs', NEW.`id`, NEW.`name`);
 	END!
 
 INSERT INTO `catalogs` SET `name` = 'Power'!
@@ -43,7 +43,7 @@ AFTER INSERT ON `products`
 FOR EACH ROW
 	BEGIN
 		 INSERT INTO `logs` (`table_name`, `pk_id`, `insert_name`)
-				     VALUES ('products', NEW.`id`, NEW.`name`);
+			     VALUES ('products', NEW.`id`, NEW.`name`);
 	END!
     
 INSERT INTO `products` SET `name` = 'Seasonic Prime PX-650 650W', 
